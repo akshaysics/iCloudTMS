@@ -1,0 +1,7 @@
+{
+  "name": "iCloudTMS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
