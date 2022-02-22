@@ -20,30 +20,38 @@ export class AppComponent {
     {
       title: 'Dashboard',
       url: '/tabs/tab3',
-      img: '../assets/side-menu/Vector.png',
+      img: '../assets/side-menu/dashboard-menu.svg',
     },
-    { title: 'Trip', url: '/tabs/tab1', img: '../assets/side-menu/trip.png' },
+    {
+      title: 'Trip',
+      url: '/tabs/tab1',
+      img: '../assets/side-menu/trips-menu.svg',
+    },
     {
       title: 'Payroll',
       url: '/tabs/tab4',
-      img: '../assets/side-menu/payrol.png',
+      img: '../assets/side-menu/payroll-menu.svg',
     },
     {
       title: 'Profile',
       url: '/tabs/tab5',
-      img: '../assets/side-menu/profile.png',
+      img: '../assets/side-menu/profile-menu.svg',
     },
     {
       title: 'Notification',
       url: '/tabs/tab2',
-      img: '../assets/side-menu/notch.png',
+      img: '../assets/side-menu/bell-menu.svg',
     },
     {
       title: 'Support',
       url: '/support',
-      img: '../assets/side-menu/support.png',
+      img: '../assets/side-menu/support-menu.svg',
     },
-    { title: 'Logout', url: '/logout', img: '../assets/side-menu/logout.png' },
+    {
+      title: 'Logout',
+      url: '/logout',
+      img: '../assets/side-menu/logout-menu.svg'
+    },
   ];
   constructor(
     private platform: Platform,

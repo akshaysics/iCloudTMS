@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/quotes */
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 import { CommonService } from '../_services/common.service';

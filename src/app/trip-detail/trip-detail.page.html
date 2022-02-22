@@ -2,12 +2,12 @@
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-menu-button>
-                <img src="../../assets/icon/menu.svg" alt="">
+                <img src="../../assets/images/app-button/menu.svg" alt="">
             </ion-menu-button>
         </ion-buttons>
         <ion-title>Trip Detail</ion-title>
         <ion-buttons slot="end">
-            <img src="../../assets/icon/back.svg" alt="" (click)="this.common.navCtrl.back()">
+            <img src="../../assets/images/app-button/back.svg" alt="" (click)="this.common.navCtrl.back()">
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -25,24 +25,28 @@
             <h6 style="margin: 7px; font-family: 'Poppins_Regular';">Load No : {{ this.tripDetails?.SystemLoadNumber }} </h6>
         </div>
         <div>
-            <img src="../../assets/images/truck-right.png" alt="" class="animate__animated animate__fadeInRightBig animate__slower">
+            <img src="../../assets/images/app-images/half-truck.svg" alt="" class="animate__animated animate__fadeInRightBig animate__slower">
         </div>
     </div>
-    <img src="../../assets/images/road.png" alt="" style="width: inherit;">
+    <img src="../../assets/images/app-images/road.svg" alt="" style="width: inherit;">
 </ion-header>
 
 <ion-content>
 
     <div style="display: flex; align-items: center; justify-content: space-evenly;
     margin-top: 10px; font-family: 'Poppins_Regular';">
-        <div>
-            <img src="../../assets/icon/date.png" alt="">
-            <span style="color: #FF8E00;"> {{ this.tripDetails?.DropOffDate | date }} </span>
+        <div style="display: flex;
+        align-items: center;
+        font-size: 13px;">
+            <img src="../../assets/icon/date.svg" alt="">
+            <span style="color: #FF8E00; margin-left: 5px;"> {{ this.tripDetails?.DropOffDate | date }} </span>
         </div>
 
-        <div>
-            <img src="../../assets/icon/clock-clr.png" alt="">
-            <span style="color: #FF8E00;"> {{ this.tripDetails?.DropOffDate | date:'shortTime' }} </span>
+        <div style="display: flex;
+        align-items: center;
+        font-size: 13px;">
+            <img src="../../assets/icon/clock.svg" alt="">
+            <span style="color: #FF8E00; margin-left: 5px;"> {{ this.tripDetails?.DropOffDate | date:'shortTime' }} </span>
         </div>
     </div>
 
@@ -328,7 +332,7 @@
                 padding: 15px;
                 width: 90px;
                 font-size: 12px;">
-            <img src="../../assets/icon/fa-solid_weight.png" alt="">
+            <img src="../../assets/icon/weight.svg" alt="">
             <p style="color: white;
             margin: 3px;
             font-family: 'Poppins_Regular';">Weight</p>
@@ -346,7 +350,7 @@
                 padding: 15px;
                 width: 90px;
                 font-size: 12px;">
-            <img src="../../assets/icon/Group13469.png" alt="">
+            <img src="../../assets/icon/miles.svg" alt="">
             <p style="color: white;
             margin: 3px;
             font-family: 'Poppins_Regular';">Miles</p>
@@ -364,7 +368,7 @@
                 padding: 15px;
                 width: 90px;
                 font-size: 12px;">
-            <img src="../../assets/icon/Vector1.png" alt="">
+            <img src="../../assets/icon/package.svg" alt="">
             <p style="color: white;
             margin: 3px;
             font-family: 'Poppins_Regular';">Quantity</p>
