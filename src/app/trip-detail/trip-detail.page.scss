@@ -1,0 +1,12 @@
+ion-item {
+    --padding-start: 0px;
+}
+
+ion-checkbox {
+    --background-checked: #570FEF;
+    --size: 17px;
+    --checkmark-width: 3px;
+    --border-color-checked: dimgrey;
+    margin-right: 15px;
+    opacity: unset;
+}
