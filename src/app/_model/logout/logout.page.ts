@@ -14,7 +14,7 @@ export class LogoutPage implements OnInit {
 
   userClicked(decision: string) {
     if (decision === 'YES') {
-      this.common.router.navigate(['/login']);
+      this.common.navCtrl.navigateRoot('/login');
       this.token.clearStorage();
       this.common.modalCtrl.dismiss();
     } else {

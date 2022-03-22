@@ -1,23 +1,32 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/quotes */
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { CommonService } from "../_services/common.service";
-import { TokenService } from "../_services/token.service";
-import { ApiService } from "./../_services/api.service";
-import Chart from "chart.js/auto";
-
+import { CommonService } from '../_services/common.service';
+import { TokenService } from '../_services/token.service';
+import { ApiService } from './../_services/api.service';
+import Chart from 'chart.js/auto';
+// import { DocScannerConfig } from 'ngx-document-scanner';
 @Component({
-  selector: "app-tab3",
-  templateUrl: "tab3.page.html",
-  styleUrls: ["tab3.page.scss"],
+  selector: 'app-tab3',
+  templateUrl: 'tab3.page.html',
+  styleUrls: ['tab3.page.scss'],
 })
 export class Tab3Page implements OnInit {
-  @ViewChild("doughnutCanvas") private doughnutCanvas: ElementRef;
+  @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
 
-  doughnutChart: Chart<"doughnut", number[], string>;
+  doughnutChart: Chart<'doughnut', number[], string>;
   userDetails: any = [];
   dashBoardDetails: any = [];
-  // RemainingValue: number;
+  notifications: any = [];
+  image: string;
+//   config: DocScannerConfig = {
+//     editorBackgroundColor: '#fafafa',
+//     buttonThemeColor: 'primary',
+//     cropToolColor: '#ff4081',
+//     cropToolShape: 'circle',
+//     exportImageIcon: 'cloud_download'
+// };
 
   constructor(
     private token: TokenService,
@@ -27,55 +36,37 @@ export class Tab3Page implements OnInit {
 
   ngOnInit() {
     this.getUserDetails();
-    // this.getDeviceScreenSize();
-    this.getDashBoardDetails();
     this.pushDriverLocation();
   }
 
+  ionViewWillEnter() {
+    this.getDashBoardDetails();
+    this.getAllNotifications();
+  }
+
   getUserDetails() {
-    this.token.storage.get("USER_DETAILS").then((val) => {
+    this.token.storage.get('USER_DETAILS').then((val) => {
       this.userDetails = val;
-      console.log("userDetails:", this.userDetails);
     });
   }
 
   getDashBoardDetails() {
-    this.api.getRequest("Mobile/GetDashBoardTripStatus").subscribe(
+    this.api.getRequest('Mobile/GetDashBoardTripStatus').subscribe(
       (res: any) => {
-        console.log("Res:", res);
-        this.dashBoardDetails = res?.lstModel;
-        console.log("dashBoardDetails:", this.dashBoardDetails);
-        // this.RemainingValue =
-        //   100 -
-        //   (this.dashBoardDetails[0]?.AssignmentCount +
-        //     this.dashBoardDetails[1]?.AssignmentCount +
-        //     this.dashBoardDetails[2]?.AssignmentCount +
-        //     this.dashBoardDetails[3]?.AssignmentCount);
-        // console.log(
-        //   "dashBoardDetails:",
-        //   this.dashBoardDetails[0]?.AssignmentCount +
-        //     this.dashBoardDetails[1]?.AssignmentCount +
-        //     this.dashBoardDetails[2]?.AssignmentCount +
-        //     this.dashBoardDetails[3]?.AssignmentCount
-        // );
-        // console.log("RemainingValue:", this.RemainingValue);
+        if (res.success === true) {
+          this.dashBoardDetails = res?.lstModel;
+          this.doughnutChartMethod();
+        } else {
+          this.doughnutChart.destroy();
+        }
       },
-      (err) => {
-        console.log('Error', err);
-      }
+      // err => {
+      //   const toastMsg = 'Something went wrong, Please try again later';
+      //   const toastTime = 3000;
+      //   this.common.presentToast(toastMsg, toastTime);
+      // }
     );
   }
-
-  ionViewDidEnter() {
-    this.doughnutChartMethod();
-  }
-
-  // ionViewDidEnter() {
-  //   this.doughnutChartMethod();
-  //   // const myInterval = setInterval(() => {
-  //   //   this.pushDriverLocation()
-  //   // }, 2000);
-  // }
 
   ionViewWillLeave() {
     this.doughnutChart.destroy();
@@ -90,7 +81,7 @@ export class Tab3Page implements OnInit {
 
   doughnutChartMethod() {
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
-      type: "doughnut",
+      type: 'doughnut',
       data: {
         datasets: [
           {
@@ -101,11 +92,11 @@ export class Tab3Page implements OnInit {
               this.dashBoardDetails[3]?.AssignmentCount,
             ],
             backgroundColor: [
-              "#0A5C49",
-              "#F11ECF",
-              "#0DC335",
-              "#570FEF",
-              "#001AFF1A",
+              '#0A5C49',
+              '#F11ECF',
+              '#0DC335',
+              '#570FEF',
+              '#001AFF1A',
             ],
           },
         ],
@@ -114,11 +105,10 @@ export class Tab3Page implements OnInit {
   }
 
   pushDriverLocation() {
+    console.log('params:');
     this.common
       .FetchUserLocation()
       .then((resp) => {
-        console.log("latitude:", resp?.coords?.latitude);
-        console.log("longitude:", resp?.coords?.longitude);
         if (resp) {
           const params = {
             lat: JSON.stringify(resp?.coords?.latitude),
@@ -126,20 +116,34 @@ export class Tab3Page implements OnInit {
             name: this.userDetails?.firstName,
             driverId: this.userDetails?.driverId,
           };
+          console.log('params:',params);
           this.api
-            .postRequestWithParams("Mobile/PushDriverLocation", params)
+            .postRequestWithParams('Mobile/PushDriverLocation', params)
             .subscribe(
               (res: any) => {
-                console.log("res:", res);
-              },
-              (err) => {
-                console.log("Error:", err);
-              }
-            );
+                console.log('Res:',res);
+              }, err => {
+                const toastMsg = 'Something went wrong on fetching your location';
+                const toastTime = 3000;
+                this.common.presentToast(toastMsg, toastTime);
+              });
         }
       })
       .catch((error) => {
-        console.log("Error getting location", error);
+        const toastMsg = 'Something went wrong, Please try again later';
+        const toastTime = 3000;
+        this.common.presentToast(toastMsg, toastTime);
       });
+  }
+
+  getAllNotifications() {
+    this.api.getRequest('Mobile/GetNotifications').subscribe((res: any) => {
+      console.log('Res:', res);
+      if (res.message === 'Success') {
+         this.notifications = res.lstModel.filter((el) => {
+          return el.readStatus === 1;
+          });
+      }
+    });
   }
 }

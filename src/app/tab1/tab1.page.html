@@ -55,11 +55,11 @@
             margin-bottom: 7px;
             display: flex; align-items: baseline;">
                 <p style="margin: 0px 5px 0px 0px; font-family: 'Poppins_Regular';"> From: </p>
-                <span style="font-size: 12px;
+                <span style="font-size: 15px;
                 margin-right: 7px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.PickUpAddress }} </span>
 
                 <p style="margin: 0px 5px 0px 0px; font-family: 'Poppins_Regular';"> To: </p>
-                <span style="font-size: 12px;
+                <span style="font-size: 15px;
                 margin-right: 7px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.DropOffAddress }} </span>
             </div>
 
@@ -69,7 +69,7 @@
 <ion-icon name="calendar-outline" style="color: #570fef;
 margin-right: 5px;"></ion-icon>
                     <!-- <img src="../../assets/icon/date.png" alt="" style="margin-right: 7px;"> -->
-                    <span style="font-size: 13px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.PickUpDate | date }} </span>
+                    <span style="font-size: 15px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.PickUpDate | date }} </span>
                 </div>
 
                 <div style="display: flex;
@@ -77,13 +77,13 @@ margin-right: 5px;"></ion-icon>
 <ion-icon name="time-outline" style="color: #570fef;
 margin-right: 5px;"></ion-icon>
                     <!-- <img src="../../assets/icon/clock-clr.png" alt="" style="margin-right: 7px;"> -->
-                    <span style="font-size: 13px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.PickUpDate | date:'shortTime' }} </span>
+                    <span style="font-size: 15px; font-family: 'Poppins_Regular'; color: #4F4F4F;"> {{ t?.PickUpDate | date:'shortTime' }} </span>
                 </div>
             </div>
 
         </div>
 
-        <div style="display: flex; width: 80px;" *ngIf="t?.Status === 1">
+        <!-- <div style="display: flex; width: 80px;" *ngIf="t?.Status === 1">
             <div>
                 <ion-icon name="ellipse" style="font-size: 12px;
                 margin-right: 3px;"></ion-icon>
@@ -105,7 +105,7 @@ margin-right: 5px;"></ion-icon>
                 margin-right: 3px;"></ion-icon>
             </div>
             <span style="font-size: 12px; font-family: 'Poppins_Regular';">Assigned</span>
-        </div>
+        </div> -->
 
         <div style="display: flex; width: 80px; color: #0A5C49;" *ngIf="t?.Status === 5">
             <div>
@@ -115,7 +115,7 @@ margin-right: 5px;"></ion-icon>
             <span style="font-size: 12px; font-family: 'Poppins_Regular';">Completed</span>
         </div>
 
-        <div style="display: flex; width: 80px;" *ngIf="t?.Status === 6">
+        <!-- <div style="display: flex; width: 80px;" *ngIf="t?.Status === 6">
             <div>
                 <ion-icon name="ellipse" style="font-size: 12px;
                 margin-right: 3px;"></ion-icon>
@@ -137,97 +137,99 @@ margin-right: 5px;"></ion-icon>
                 margin-right: 3px;"></ion-icon>
             </div>
             <span style="font-size: 12px; font-family: 'Poppins_Regular';">Factoring Rejected</span>
-        </div>
+        </div> -->
 
-        <div style="display: flex; width: 80px;" *ngIf="t?.Status === 9">
+        <!-- <div style="display: flex; width: 80px;" *ngIf="t?.Status === 9">
             <div>
                 <ion-icon name="ellipse" style="font-size: 12px;
                 margin-right: 3px;"></ion-icon>
             </div>
             <span style="font-size: 12px; font-family: 'Poppins_Regular';">Tonu</span>
-        </div>
+        </div> -->
 
         <div style="display: flex; width: 80px; color: #FF8E00;"  *ngIf="t?.Status === 10">
             <div>
                 <ion-icon name="ellipse" style="font-size: 12px;
                 margin-right: 3px;"></ion-icon>
             </div>
-        <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Lumper Fees</span>
+        <span style="font-size: 12px; font-family: 'Poppins_Regular';">Lumper Fees</span>
     </div>
 
-    <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 11">
+    <!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 11">
         <div>
             <ion-icon name="ellipse" style="font-size: 12px;
             margin-right: 3px;"></ion-icon>
         </div>
     <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Detention</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 12">
+<div style="display: flex; width: 80px; color: #C71F16"  *ngIf="t?.Status === 12">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
-<span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Cancelled</span>
+<span style="font-size: 12px; font-family: 'Poppins_Regular';">Cancelled</span>
 </div>
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 13">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 13">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Transient</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 14">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 14">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Picked Upload Document</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 15">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 15">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Picked Upload Document Rejected</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 16">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 16">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Picked Upload Document Approved</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 17">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 17">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Delivered Upload Document</span>
-</div>
+</div> -->
 
 <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 18">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
-<span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Delivered Upload Document Rejected</span>
+<span style="font-size: 12px; font-family: 'Poppins_Regular';">
+  <!-- Load Delivered Upload  -->
+  Document Rejected</span>
 </div>
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 19">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 19">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Delivered Upload Document Approved</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 20">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 20">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
@@ -241,9 +243,9 @@ margin-right: 5px;"></ion-icon>
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Picked</span>
-</div>
+</div> -->
 
-<div style="display: flex; width: 80px;"  *ngIf="t?.Status === 22">
+<!-- <div style="display: flex; width: 80px;"  *ngIf="t?.Status === 22">
     <div>
         <ion-icon name="ellipse" style="font-size: 12px;
         margin-right: 3px;"></ion-icon>
@@ -257,7 +259,7 @@ margin-right: 5px;"></ion-icon>
         margin-right: 3px;"></ion-icon>
     </div>
 <span style="font-size: 12px; font-family: 'Poppins_Regular';">Load Delivered</span>
-</div>
+</div> -->
 
 
     </div>

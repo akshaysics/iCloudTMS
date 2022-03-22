@@ -123,8 +123,15 @@ ion-note {
 
 .notification-modal {
     --width: 90%;
-    --height: 23%;
+    --height: 50%;
     --border-radius: 10px;
+    --background: transparent;
+}
+
+.logout-modal {
+  --width: 90%;
+  --height: 23%;
+  --border-radius: 10px;
 }
 
 ion-searchbar {

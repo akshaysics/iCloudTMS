@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../_services/api.service';
-
+import { CommonService } from '../../_services/common.service';
 @Component({
   selector: 'app-notification-message',
   templateUrl: './notification-message.page.html',
@@ -13,9 +13,13 @@ export class NotificationMessagePage implements OnInit {
   @Input() id: number;
   @Input() readStatus: number;
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    public common: CommonService
+    ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ionViewWillLeave() {
     this.markAsRead();
@@ -27,14 +31,13 @@ export class NotificationMessagePage implements OnInit {
         .getRequestWithParams('Mobile/MarkNotificationAsRead/', this.id)
         .subscribe(
           (res: any) => {
-            console.log('Res:', res);
           },
           (err) => {
-            console.log('Error:', err);
+            const toastMsg = 'Something went wrong, Please try again later';
+            const toastTime = 3000;
+            this.common.presentToast(toastMsg, toastTime);
           }
         );
-    } else {
-      console.log('already read');
     }
   }
 }

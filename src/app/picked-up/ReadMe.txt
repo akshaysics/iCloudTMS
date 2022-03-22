@@ -203,3 +203,49 @@
         </ion-content>
         </ng-template>
       </ion-modal> -->
+
+
+
+        // pickImage(sourceType) {
+  //   const options: CameraOptions = {
+  //     quality: 100,
+  //     sourceType: sourceType,
+  //     correctOrientation: true,
+  //     destinationType: this.camera.DestinationType.DATA_URL,
+  //     encodingType: this.camera.EncodingType.JPEG,
+  //     mediaType: this.camera.MediaType.PICTURE,
+  //   };
+
+  //   this.camera.getPicture(options).then(async (imageData) => {
+
+  //     this.base64textString = imageData;
+  //     console.log('base64textString:',this.base64textString);
+  //   }, (err) => {
+  //     console.log('Error:',err);
+  //   });
+  // }
+
+  // onChange(event: any) {
+  //   console.log("event:", event);
+  //   this.selectedMedia = event.target.files;
+  //   console.log("selectedMedia:", this.selectedMedia);
+
+  //   var files = event.target.files;
+  //   var file = files[0];
+
+  //   if (files && file) {
+  //     var reader = new FileReader();
+
+  //     reader.onload = this._handleReaderLoaded.bind(this);
+
+  //     reader.readAsBinaryString(file);
+  //   }
+
+  // }
+
+  // _handleReaderLoaded(readerEvt) {
+  //   var binaryString = readerEvt.target.result;
+  //   this.base64textString = btoa(binaryString);
+  //   console.log(btoa(binaryString));
+  //   console.log("base64textString:", this.base64textString);
+  // }

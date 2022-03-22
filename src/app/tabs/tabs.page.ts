@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonTabs } from '@ionic/angular';
-
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -14,7 +13,6 @@ export class TabsPage {
 
   setCurrentTab() {
     this.selectedTab = this.tabs.getSelected();
-    console.log('selectedTab:',this.selectedTab);
   }
 
 }

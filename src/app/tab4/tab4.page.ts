@@ -1,16 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { NavigationExtras } from "@angular/router";
-import { ApiService } from "../_services/api.service";
-import { CommonService } from "../_services/common.service";
-import { PayrollPopoverPage } from "../_popover/payroll-sort/payroll-popover.page";
-import { FormControl } from "@angular/forms";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
-import { TokenService } from "../_services/token.service";
+/* eslint-disable arrow-body-style */
+import { Component, OnInit } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
+import { ApiService } from '../_services/api.service';
+import { CommonService } from '../_services/common.service';
+import { PayrollPopoverPage } from '../_popover/payroll-sort/payroll-popover.page';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { TokenService } from '../_services/token.service';
 
 @Component({
-  selector: "app-tab4",
-  templateUrl: "tab4.page.html",
-  styleUrls: ["tab4.page.scss"],
+  selector: 'app-tab4',
+  templateUrl: 'tab4.page.html',
+  styleUrls: ['tab4.page.scss'],
 })
 export class Tab4Page implements OnInit {
   userDetails: any = [];
@@ -43,40 +44,39 @@ export class Tab4Page implements OnInit {
   }
 
   getUserDetails() {
-    this.token.storage.get("USER_DETAILS").then((val) => {
+    this.token.storage.get('USER_DETAILS').then((val) => {
       this.userDetails = val;
       if (val) {
         this.getPayrolls();
-      } else {
-        console.log("user details empty");
       }
     });
   }
 
   doRefresh(event: any) {
-    console.log("Begin async operation");
     this.getPayrolls();
 
     setTimeout(() => {
-      console.log("Async operation has ended");
       event.target.complete();
     }, 2000);
   }
 
   getPayrolls() {
     const params = {
-      searchValue: "",
+      searchValue: '',
       status: this.payrollStatus,
       driverId: this.userDetails?.driverId,
       companyId: this.userDetails?.companyId,
     };
-    this.api.postRequestWithParams("Mobile/GetAllPayroll", params).subscribe(
+    this.api.postRequestWithParams('Mobile/GetAllPayroll', params).subscribe(
       (res: any) => {
-        console.log("Res:", res);
-        this.payRolls = res?.lstModel;
+        if (res.success === true) {
+          this.payRolls = res?.lstModel;
+        }
       },
       (err) => {
-        console.log("Error:", err);
+        const toastMsg = 'Something went wrong, Please try again later';
+        const toastTime = 3000;
+        this.common.presentToast(toastMsg, toastTime);
       }
     );
   }
@@ -86,25 +86,24 @@ export class Tab4Page implements OnInit {
         payroll: payRollDetails,
       },
     };
-    this.common.router.navigate(["/payroll-details"], navigationExtras);
+    this.common.router.navigate(['/payroll-details'], navigationExtras);
   }
 
   async presentPopover(ev: any) {
     const popover = await this.common.popOver.create({
       component: PayrollPopoverPage,
-      cssClass: "days-sort-popover",
+      cssClass: 'days-sort-popover',
       event: ev,
       translucent: true,
     });
     popover.onDidDismiss().then((result) => {
-      console.log(result?.data);
-      if (result?.data === "All") {
+      if (result?.data === 'All') {
         this.payrollStatus = 0;
         this.getPayrolls();
-      } else if (result?.data === "Paid") {
+      } else if (result?.data === 'Paid') {
         this.payrollStatus = 3;
         this.getPayrolls();
-      } else if (result?.data === "Pending") {
+      } else if (result?.data === 'Pending') {
         this.payrollStatus = 1;
         this.getPayrolls();
       }
@@ -115,13 +114,13 @@ export class Tab4Page implements OnInit {
 
   searchInput(event: any) {
     this.searching = true;
-    let val = event.target.value;
+    const val = event.target.value;
     if (!val || !val.trim()) {
       this.getPayrolls();
     } else {
       if (
-        event.detail.inputType === "deleteContentBackward" &&
-        event.target.value !== ""
+        event.detail.inputType === 'deleteContentBackward' &&
+        event.target.value !== ''
       ) {
         this.getPayrolls();
       } else {

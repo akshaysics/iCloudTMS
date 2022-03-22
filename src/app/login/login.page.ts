@@ -6,7 +6,8 @@ import { CommonService } from '../_services/common.service';
 import { TokenService } from '../_services/token.service';
 import { Device } from '@awesome-cordova-plugins/device/ngx';
 import * as sha512 from 'js-sha512';
-import { FCM } from '@awesome-cordova-plugins/fcm/ngx';
+// import { FCM } from '@awesome-cordova-plugins/fcm/ngx';
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 @Component({
@@ -48,10 +49,10 @@ export class LoginPage implements OnInit {
     this.loginForm = this.formBuilder.group({
       userName: [null, [Validators.required, Validators.minLength(3)]],
       password: [null, [Validators.required, Validators.minLength(5)]],
-      otp: ['string'],
-      capchaValue: ['string'],
+      otp: [''],
+      capchaValue: [''],
       userType: [0],
-      mobileFCMToken: [this.device.uuid],
+      mobileFCMToken: [null],
     });
   }
 
@@ -61,8 +62,13 @@ export class LoginPage implements OnInit {
       .then(
         (result) => console.log('Has permission?', result.hasPermission),
         (err) =>
-          this.androidPermissions.requestPermission(
-            this.androidPermissions.PERMISSION.CAMERA
+          this.androidPermissions.requestPermissions(
+            [
+              this.androidPermissions.PERMISSION.CAMERA,
+              this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
+              this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
+              this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
+            ]
           )
       );
   }
@@ -105,6 +111,8 @@ export class LoginPage implements OnInit {
         .getToken()
         .then((token) => {
           console.log('token:', token);
+          this.loginForm.value.mobileFCMToken = token;
+          this.loginForm.get('mobileFCMToken').setValue(token);
           // Register your new token in your back-end if you want
           // backend.registerToken(token);
         })
@@ -218,11 +226,11 @@ export class LoginPage implements OnInit {
       .get('USER_DETAILS_CHECKED')
       .then((val) => {
         console.log('Value', val);
-        this.loginForm.value.userName = val?.userName;
-        this.loginForm.value.password = val?.password;
         if (!val) {
           console.log('No User Details Stored');
         } else {
+          this.loginForm.get('userName').setValue(val.userName);
+          this.loginForm.get('password').setValue(val.password);
           const msg =
             'We found your stored Email and Password, would you like to continue with that';
           const time = 2000;

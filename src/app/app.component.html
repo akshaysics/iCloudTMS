@@ -8,9 +8,11 @@
                 </ion-refresher>
 
                 <ion-list id="inbox-list">
+                  <div style="display: flex;
+                  align-items: center;
+                  justify-content: space-between;">
                     <div style="display: flex;
                     align-items: center;
-                    justify-content: space-between;
                     margin-bottom: 25px;">
                         <div style="background-color: #556080;
                         border-radius: 10px;">
@@ -22,10 +24,12 @@
                             <ion-list-header> {{ this.userDetails?.firstName }} </ion-list-header>
                             <ion-note> {{ this.userDetails?.driverEmail }} </ion-note>
                         </div>
-                        <div>
-                            <img src="../assets//images/app-button/forward.svg" alt="" (click)="this.menu.close()">
-                        </div>
                     </div>
+                    <div>
+                      <img src="../assets/images/app-button/forward.svg" alt="" (click)="this.menu.close()">
+                  </div>
+                  </div>
+
 
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
                         <ion-item routerDirection="root" lines="none" detail="false" routerLinkActive="selected" (click)="openPage(i)">

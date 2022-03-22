@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title> Dashboard </ion-title>
         <ion-buttons slot="end">
-            <ion-badge>1</ion-badge>
+            <ion-badge> {{ this.notifications.length }} </ion-badge>
             <img src="../../assets/images/app-button/bell.svg" alt="" routerLink="/tabs/tab2">
         </ion-buttons>
     </ion-toolbar>
@@ -74,5 +74,15 @@
         </div>
 
     </ion-grid>
+
+    <!-- <ngx-doc-scanner
+     *ngIf="image"
+     [file]="image"
+     [config]="config">
+     (editResult)="editResult($event)"
+     (exitEditor)="exitEditor($event)"
+     (error)="onError($event)"
+     (processing)="editorState($event)"
+  </ngx-doc-scanner> -->
 
 </ion-content>

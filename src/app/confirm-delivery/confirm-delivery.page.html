@@ -2,11 +2,11 @@
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-menu-button>
-                <img src="../../assets/icon/menu.svg" alt="">
+                <img src="../../assets/images/app-button/menu.svg" alt="">
             </ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <img src="../../assets/icon/back.svg" alt="" (click)="this.common.navCtrl.back()">
+            <img src="../../assets/images/app-button/back.svg" alt="" (click)="this.common.navCtrl.back()">
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -14,19 +14,19 @@
 <ion-header class="ion-no-border">
 
     <div style="text-align: center; position: relative; top: 35px;">
-        <img src="../../assets/images/truck.png" alt="">
-        <img src="../../assets/images/man.png" alt="" style="position: relative;
+        <img src="../../assets/images/app-images/full-truck.svg" alt="">
+        <img src="../../assets/images/app-images/man.svg" alt="" style="position: relative;
         right: 15px;">
     </div>
     <div style="position: absolute;
     top: 40%;
     right: 35%;
     display: grid;">
-        <img src="../../assets/images/Confirm.png" alt="" style="margin-left: 5px;
+        <img src="../../assets/images/text-img/Confirm.svg" alt="" style="margin-left: 5px;
         height: 16px;">
-        <img src="../../assets/images/Delivery.png" alt="" style="height: 22px;">
+        <img src="../../assets/images/text-img/Delivery.svg" alt="" style="height: 22px;">
     </div>
-    <img src="../../assets/images/road.png" alt="" style="width: inherit;">
+    <img src="../../assets/images/app-images/road.svg" alt="" style="width: inherit;">
 </ion-header>
 
 <ion-content>
@@ -37,7 +37,7 @@
             <p>Select Date Time</p>
             <ion-item lines="none" style="--background: rgba(87, 15, 239, 0.1);
             border-radius: 10px;">
-                <img src="../../assets/icon/date.png" alt="" slot="start">
+                <img src="../../assets/icon/date.svg" alt="" slot="start">
                 <ion-input placeholder="Choose date and time" id="open-modal" [readonly]="true" [value]="this.today | date:'medium' "></ion-input>
             </ion-item>
 
@@ -58,11 +58,12 @@
             </ion-item>
 
             <ion-item lines="none">
-                <img src="../../assets/icon/file_camera.png" alt="">
+                <img src="../../assets/icon/upload.svg" alt="">
                 <div>
                     <!-- <ion-input type="file" style="position: absolute;
                     opacity: 0;" accept="image/*;" capture="camera" multiple="true" (change)="onChange($event)"></ion-input> -->
-                            <p style="margin-left: 7px;" (click)="pickImage(this.camera.PictureSourceType.CAMERA)">Upload documents</p>
+                            <!-- <p style="margin-left: 7px;" (click)="pickImage(this.camera.PictureSourceType.CAMERA)">Upload documents</p> -->
+                            <p style="margin-left: 7px;" (click)="scanDoc()">Upload documents</p>
             </div>
             </ion-item>
 
@@ -73,7 +74,7 @@
                     background-color: #eee6fe;
                     padding: 10px;
                     border-radius: 15px;">
-                         {{ this.tripDetails?.SystemLoadNumber+'.jpeg' }} 
+                         {{ this.tripDetails?.SystemLoadNumber+'.jpeg' }}
                          <!-- <ion-icon name="close-circle-outline" style="float: right;
                          color: black;
                          font-size: 1.5rem;

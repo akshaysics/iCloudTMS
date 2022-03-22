@@ -12,21 +12,25 @@ export class SupportPage implements OnInit {
 
   constructor(
     private api: ApiService,
-    public common: CommonService
-  ) { }
+     public common: CommonService
+     ) {}
 
   ngOnInit() {
     this.getContactInfo();
   }
 
   getContactInfo() {
-    this.api.getRequest('Mobile/GetContactInfo').subscribe((res: any) => {
-      console.log('Res:',res);
-      if (res?.message === 'Success') {
-        this.contactInfo = res?.lstModel;
+    this.api.getRequest('Mobile/GetContactInfo').subscribe(
+      (res: any) => {
+        if (res.message === 'Success') {
+          this.contactInfo = res?.lstModel;
+        }
+      },
+      (err) => {
+        const toastMsg = 'Something went wrong, Please try again later';
+        const toastTime = 3000;
+        this.common.presentToast(toastMsg, toastTime);
       }
-      console.log('contactInfo:',this.contactInfo);
-    });
+    );
   }
-
 }

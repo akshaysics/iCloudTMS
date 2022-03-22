@@ -1,13 +1,14 @@
+/* eslint-disable arrow-body-style */
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras } from "@angular/router";
-import { ApiService } from "../_services/api.service";
-import { CommonService } from "../_services/common.service";
-import { FormControl } from "@angular/forms";
+import { NavigationExtras } from '@angular/router';
+import { ApiService } from '../_services/api.service';
+import { CommonService } from '../_services/common.service';
+import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
   userDetails: any = [];
@@ -22,7 +23,6 @@ export class Tab1Page implements OnInit {
       if (this.common.router.getCurrentNavigation().extras.state) {
         this.userDetails =
           this.common.router.getCurrentNavigation().extras.state.userInfo;
-        console.log("userDetails:", this.userDetails);
       }
     });
 
@@ -34,23 +34,23 @@ export class Tab1Page implements OnInit {
     this.skeleton.length = 10;
 
     this.searchControl.valueChanges
-    .pipe(debounceTime(700),
-      distinctUntilChanged()
-    )
-    .subscribe(search => {
-      console.log('search:', search);
-      this.searching = false;
-      this.setFilteredItems(search);
-    });
+      .pipe(debounceTime(700), distinctUntilChanged())
+      .subscribe((search) => {
+        this.searching = false;
+        this.setFilteredItems(search);
+      });
   }
 
   searchInput(event: any) {
     this.searching = true;
-    let val = event.target.value;
+    const val = event.target.value;
     if (!val || !val.trim()) {
       this.getTrips();
     } else {
-      if (event.detail.inputType === 'deleteContentBackward' && event.target.value !== '') {
+      if (
+        event.detail.inputType === 'deleteContentBackward' &&
+        event.target.value !== ''
+      ) {
         this.getTrips();
       } else {
         this.searchTerm = val;
@@ -59,34 +59,26 @@ export class Tab1Page implements OnInit {
   }
 
   doRefresh(event: any) {
-    console.log('Begin async operation');
     this.getTrips();
 
     setTimeout(() => {
-      console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
   }
 
   getTrips() {
-    this.api
-      .getRequestWithParams(
-        "Mobile/GetAssignedSystemLoad/",
-        0
-      )
-      .subscribe(
-        (res: any) => {
-          console.log("Res:", res);
-          if (res?.success === true) {
-            this.allTrips = res?.lstModel;
-          } else {
-            console.log('No data');
-          }
-        },
-        (err) => {
-          console.log("Error:", err);
+    this.api.getRequestWithParams('Mobile/GetAssignedSystemLoad/', 0).subscribe(
+      (res: any) => {
+        if (res.success === true) {
+          this.allTrips = res?.lstModel;
         }
-      );
+      },
+      (err) => {
+        const toastMsg = 'Something went wrong, Please try again later';
+        const toastTime = 3000;
+        this.common.presentToast(toastMsg, toastTime);
+      }
+    );
   }
 
   setFilteredItems(search) {
@@ -94,8 +86,10 @@ export class Tab1Page implements OnInit {
   }
 
   filterNotifications(searchTerm) {
-    return this.allTrips.filter(n => {
-      return n?.SystemLoadNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    return this.allTrips.filter((n) => {
+      return (
+        n?.SystemLoadNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+      );
     });
   }
 
@@ -103,10 +97,9 @@ export class Tab1Page implements OnInit {
     const p = page;
     const navigationExtras: NavigationExtras = {
       state: {
-        trip: tripDetails
-      }
+        trip: tripDetails,
+      },
     };
     this.common.router.navigate([p], navigationExtras);
   }
-
 }

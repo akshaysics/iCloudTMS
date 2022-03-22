@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonService } from '../_services/common.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { CommonService } from '../_services/common.service';
   templateUrl: './payroll-details.page.html',
   styleUrls: ['./payroll-details.page.scss'],
 })
-export class PayrollDetailsPage implements OnInit {
+export class PayrollDetailsPage {
   payRollDetails: any = [];
 
   constructor(public common: CommonService) {
@@ -14,12 +14,8 @@ export class PayrollDetailsPage implements OnInit {
       if (this.common.router.getCurrentNavigation().extras.state) {
         this.payRollDetails =
           this.common.router.getCurrentNavigation().extras.state.payroll;
-        console.log("payRollDetails:", this.payRollDetails);
       }
     });
-   }
-
-  ngOnInit() {
   }
 
 }

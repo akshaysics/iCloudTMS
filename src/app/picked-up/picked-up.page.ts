@@ -1,15 +1,23 @@
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable object-shorthand */
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../_services/api.service";
-import { CommonService } from "../_services/common.service";
-import { NavigationExtras } from "@angular/router";
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../_services/api.service';
+import { CommonService } from '../_services/common.service';
+import { NavigationExtras } from '@angular/router';
+import {
+  DocumentScanner,
+  DocumentScannerOptions,
+} from '@ionic-native/document-scanner/ngx';
+import { BackgroundMode } from '@awesome-cordova-plugins/background-mode/ngx';
+import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FilePath } from '@awesome-cordova-plugins/file-path/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 @Component({
-  selector: "app-picked-up",
-  templateUrl: "./picked-up.page.html",
-  styleUrls: ["./picked-up.page.scss"],
+  selector: 'app-picked-up',
+  templateUrl: './picked-up.page.html',
+  styleUrls: ['./picked-up.page.scss'],
 })
 export class PickedUpPage implements OnInit {
   tripDetails: any = [];
@@ -17,83 +25,94 @@ export class PickedUpPage implements OnInit {
   selectedMedia: any = [];
   comments: string;
   base64textString: string;
-  showLoader: boolean;
+  images: any = [];
+  caminhoImg: any = [];
 
   constructor(
     private api: ApiService,
     public common: CommonService,
-    public camera: Camera,
+    private backgroundMode: BackgroundMode,
+    private sanitizer: DomSanitizer,
+    private webview: WebView,
+    private file: File,
+    private filePath: FilePath,
+    private documentScanner: DocumentScanner
   ) {
     this.common.route.queryParams.subscribe((params) => {
       if (this.common.router.getCurrentNavigation().extras.state) {
         this.tripDetails =
           this.common.router.getCurrentNavigation().extras.state.trip;
-        console.log("tripDetails:", this.tripDetails);
+        console.log('tripDetails:', this.tripDetails);
       }
     });
   }
 
   ngOnInit() {
     this.today = new Date();
-    this.base64textString = "";
-    this.showLoader = false;
+    this.base64textString = '';
   }
 
   doSomething(event: any) {
-    console.log("event:", event?.detail?.value);
+    console.log('event:', event?.detail?.value);
     this.today = event?.detail?.value;
     this.common.modalCtrl.dismiss();
   }
 
-  pickImage(sourceType) {
-    const options: CameraOptions = {
-      quality: 100,
-      sourceType: sourceType,
-      correctOrientation: true,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-    };
+  scanDoc() {
+    if (this.common.platform.ready()) {
+      if (this.common.platform.is('cordova')) {
+        this.backgroundMode.disable();
+        const opts: DocumentScannerOptions = {
+          sourceType: 1,
+          fileName: 'myfile',
+          quality: 2.0,
+          returnBase64: false,
+        };
+        this.documentScanner.scanDoc(opts).then((res) => {
+          setTimeout(() => {
+            this.backgroundMode.enable();
+          }, 500);
+          console.log(res);
+          if (this.common.platform.is('ios')) {
+            const img = this.webview.convertFileSrc(res);
+            const imageTraData = this.sanitizer.bypassSecurityTrustUrl(img);
+            this.images.push(imageTraData);
+            this.caminhoImg.push(res);
+          } else {
+            this.filePath.resolveNativePath(res).then((url) => {
+              console.log('res:', res);
+              console.log('url:', url);
+              //Data = file:///storage/emulated/0/Pictures/ + nome da imagem
+              this.filePath.resolveNativePath(res).then((data) => {
+                console.log('data:', data);
+                const filename = res.substring(res.lastIndexOf('/') + 1);
+                console.log('filename:', filename);
 
-    this.camera.getPicture(options).then(async (imageData) => {
+                const path = res.substring(0, res.lastIndexOf('/') + 1);
+                console.log('path:', path);
 
-      this.base64textString = imageData;
-      console.log('base64textString:',this.base64textString);
-    }, (err) => {
-      console.log('Error:',err);
-    });
+                this.file.readAsDataURL(path, filename).then((base64string) => {
+                  console.log('base64string:', base64string);
+                  const modifiedString = base64string.replace(/^data:image\/[a-z]+;base64,/, "");
+                  console.log('modifiedString:', modifiedString);
+                  this.base64textString = modifiedString;
+                });
+              });
+            });
+          }
+        });
+      } else {
+        console.log('not cordova');
+      }
+    } else {
+      console.log('not ready');
+    }
   }
 
-  // onChange(event: any) {
-  //   console.log("event:", event);
-  //   this.selectedMedia = event.target.files;
-  //   console.log("selectedMedia:", this.selectedMedia);
-
-  //   var files = event.target.files;
-  //   var file = files[0];
-
-  //   if (files && file) {
-  //     var reader = new FileReader();
-
-  //     reader.onload = this._handleReaderLoaded.bind(this);
-
-  //     reader.readAsBinaryString(file);
-  //   }
-
-  // }
-
-  // _handleReaderLoaded(readerEvt) {
-  //   var binaryString = readerEvt.target.result;
-  //   this.base64textString = btoa(binaryString);
-  //   console.log(btoa(binaryString));
-  //   console.log("base64textString:", this.base64textString);
-  // }
-
   gotoPage() {
-    console.log("this.choosedFileToBase64[0]: ", this.base64textString);
-    if (this.base64textString !== "") {
+    console.log('this.choosedFileToBase64[0]: ', this.base64textString);
+    if (this.base64textString !== '') {
       this.common.simpleLoader();
-      this.showLoader = true;
       const params = {
         subSystemLoadId: this.tripDetails?.SubSystemLoadId,
         status: this.tripDetails?.Status,
@@ -102,7 +121,7 @@ export class PickedUpPage implements OnInit {
         lstSubSystemloaduploadModel: [
           {
             mapNumber: 0,
-            fileName: this.tripDetails?.SystemLoadNumber+'.jpeg',
+            fileName: this.tripDetails?.SystemLoadNumber + '.jpeg',
             filePath: this.base64textString,
             fileType: 'image/jpeg',
             subSystemLoadId: this.tripDetails?.SubSystemLoadId,
@@ -112,15 +131,15 @@ export class PickedUpPage implements OnInit {
           },
         ],
       };
-      console.log("params:", params);
+      console.log('params:', params);
       this.api
-        .postRequestWithParams("Mobile/UpdateSubLoadStatus", params)
+        .postRequestWithParams('Mobile/UpdateSubLoadStatus', params)
         .subscribe(
           (res: any) => {
-            console.log("res:", res);
-            if (res.message === "Record updated successfully") {
+            console.log('res:', res);
+            if (res.message === 'Record updated successfully') {
               this.common.dismissLoader();
-              const toastMsg = "Picked-up record updated successfully";
+              const toastMsg = 'Picked-up record updated successfully';
               const toastTime = 1000;
               this.common.presentToast(toastMsg, toastTime);
               const navigationExtras: NavigationExtras = {
@@ -129,20 +148,22 @@ export class PickedUpPage implements OnInit {
                 },
               };
               this.common.router.navigate(
-                ["/picked-up-inner"],
+                ['/picked-up-inner'],
                 navigationExtras
               );
+            } else {
+              this.common.dismissLoader();
+              console.log('error:',res.message);
             }
           },
           (err) => {
             this.common.dismissLoader();
-            console.log("err:", err);
+            console.log('err:', err);
           }
         );
-        this.showLoader = false;
     } else {
-      const alertHead = " Failed !";
-      const alertMessage = "You must need to upload picked-up documents";
+      const alertHead = ' Failed !';
+      const alertMessage = 'You must need to upload picked-up documents';
       this.common.presentAlert(alertHead, alertMessage);
     }
   }
@@ -158,5 +179,4 @@ export class PickedUpPage implements OnInit {
   //     navigationExtras
   //   );
   // }
-
 }

@@ -8,7 +8,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LogoutPage } from './_model/logout/logout.page';
 // import { BackgroundGeolocation } from '@awesome-cordova-plugins/background-geolocation/ngx';
 // import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -50,18 +50,20 @@ export class AppComponent {
     {
       title: 'Logout',
       url: '/logout',
-      img: '../assets/side-menu/logout-menu.svg'
+      img: '../assets/side-menu/logout-menu.svg',
     },
   ];
   constructor(
     private platform: Platform,
     private navCtrl: NavController,
     private token: TokenService,
+    private storage: Storage,
     private modalController: ModalController,
     // private backgroundGeolocation: BackgroundGeolocation,
     public menu: MenuController,
-    public router: Router // private splashScreen: SplashScreen
-  ) {
+    public router: Router
+  ) // private splashScreen: SplashScreen
+  {
     this.initializeApp();
   }
 
@@ -83,17 +85,17 @@ export class AppComponent {
   }
 
   checkUserDetails() {
-    this.token.storage
+    this.storage
       .get('USER_DETAILS')
       .then(async (val) => {
-        if (val) {
+        if (val === null) {
+          this.navCtrl.navigateRoot('/login');
+        } else {
           this.navCtrl.navigateRoot('/tabs/tab3');
           this.userDetails = val;
           console.log('userDetails:', this.userDetails);
-          this.token.saveToken(this.userDetails?.token);
-          this.token.setStorage('USER_TOKEN', this.userDetails?.token);
-        } else {
-          await this.navCtrl.navigateRoot('/login');
+          this.token.saveToken(this.userDetails.token);
+          this.token.setStorage('USER_TOKEN', this.userDetails.token);
         }
       })
       .catch((err) => {
@@ -119,7 +121,7 @@ export class AppComponent {
   async presentLogoutModal() {
     const modal = await this.modalController.create({
       component: LogoutPage,
-      cssClass: 'notification-modal',
+      cssClass: 'logout-modal',
     });
     return await modal.present();
   }
